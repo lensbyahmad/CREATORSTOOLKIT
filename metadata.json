@@ -1,0 +1,6 @@
+{
+  "name": "CreatorsToolkit",
+  "description": "A modern and responsive hub providing professional AI tools (YouTube titles, captions, hashtags, scripts, and blog ideas) for content creators with a blogging engine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
