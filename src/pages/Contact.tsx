@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { db } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
 import { Mail, MessageSquare, Phone, MapPin, CheckCircle, Loader2, Sparkles, AlertCircle } from "lucide-react";
 import AdPlaceholder from "../components/AdPlaceholder";
 
@@ -23,22 +21,16 @@ export default function Contact() {
         throw new Error("Please fill out all necessary fields.");
       }
 
-      // Add document directly into Firestore db list 'contact_submissions'
-      await addDoc(collection(db, "contact_submissions"), {
-        name,
-        email,
-        subject,
-        message,
-        createdAt: new Date().toISOString()
-      });
+      // Simulate network request
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       setSuccess(true);
       setName("");
       setEmail("");
       setMessage("");
     } catch (err: any) {
-      console.error("Firestore inquiry submit error:", err);
-      setError(err.message || "Unable to save your message. Please verify network links.");
+      console.error("Inquiry submit error:", err);
+      setError(err.message || "Unable to save your message.");
     } finally {
       setLoading(false);
     }
@@ -52,7 +44,7 @@ export default function Contact() {
         <h1 className="text-3xl font-black tracking-tight text-gray-950 dark:text-white">
           Initiate Creator Consultation
         </h1>
-        <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1 max-w-lg">
+        <p className="text-xs text-gray-700 dark:text-zinc-400 mt-1 max-w-lg">
           Do you have feature ideas, custom partnership models, or need professional technical assistance? Speak directly to our strategy developers.
         </p>
       </div>
@@ -67,8 +59,8 @@ export default function Contact() {
             </h3>
 
             {[
-              { label: "Dispatch Email Address", text: "support@creatorstoolkit.com", desc: "Monitored round-the-clock by human copy analysts", icon: Mail },
-              { label: "Phone Hotline Support", text: "+1 (888) CREATOR-AI", desc: "Mon-Fri 9AM to 5PM Pacific Time Standard", icon: Phone },
+              { label: "Dispatch Email Address", text: "creatorstoolkitonline@gmail.com", href: "mailto:creatorstoolkitonline@gmail.com", desc: "Monitored round-the-clock by human copy analysts", icon: Mail },
+              { label: "Phone Hotline Support", text: "+1 (888) CREATOR-AI", href: "tel:+18882732867", desc: "Mon-Fri 9AM to 5PM Pacific Time Standard", icon: Phone },
               { label: "Silicon Valley Tech HQ", text: "300 Constitution Drive, Menlo Park, CA", desc: "Corporate engineering quarters only", icon: MapPin }
             ].map((chan, idx) => {
               const IconComp = chan.icon;
@@ -79,8 +71,14 @@ export default function Contact() {
                   </span>
                   <div>
                     <h5 className="font-extrabold text-gray-900 dark:text-white">{chan.label}</h5>
-                    <p className="font-semibold text-indigo-600 dark:text-indigo-400 mt-0.5">{chan.text}</p>
-                    <p className="text-[10px] text-gray-400 dark:text-zinc-500 italic mt-0.5">{chan.desc}</p>
+                    {chan.href ? (
+                      <a href={chan.href} className="font-semibold text-indigo-600 dark:text-indigo-400 mt-0.5 hover:underline block">
+                        {chan.text}
+                      </a>
+                    ) : (
+                      <p className="font-semibold text-indigo-600 dark:text-indigo-400 mt-0.5">{chan.text}</p>
+                    )}
+                    <p className="text-[10px] text-gray-700 dark:text-zinc-500 italic mt-0.5">{chan.desc}</p>
                   </div>
                 </div>
               );
@@ -100,7 +98,7 @@ export default function Contact() {
                 <CheckCircle size={32} />
               </div>
               <h3 className="text-lg font-black text-gray-900 dark:text-white">Communication Dispatched Successfully!</h3>
-              <p className="text-xs text-gray-500 dark:text-zinc-400 max-w-sm mx-auto leading-relaxed">
+              <p className="text-xs text-gray-700 dark:text-zinc-400 max-w-sm mx-auto leading-relaxed">
                 Thank you for your inquiry. A member of CreatorsToolkit's copywriting review board will follow up at the registered email address in under 12 hours.
               </p>
               <button

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase";
-import { collection, addDoc, query, where, orderBy, getDocs, limit, deleteDoc, doc } from "firebase/firestore";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Sparkles,
   Youtube,
@@ -19,18 +18,24 @@ import {
   Calendar,
   AlertCircle,
   HelpCircle,
-  BookOpen
+  BookOpen,
+  HardDrive,
+  Mail,
+  Search,
+  Image,
+  Compass,
+  Tag,
+  Target
 } from "lucide-react";
 import AdPlaceholder from "../components/AdPlaceholder";
 import { ToolType, ToolDefinition } from "../types";
 import { TOOL_GUIDES } from "../data/guides";
+import { YoutubeIcon, CaptionIcon, HashtagIcon, ScriptIcon, SparklesIcon } from "../components/ToolIcons";
 
 interface ToolsProps {
-  user: any;
-  onOpenAuth: () => void;
 }
 
-export default function Tools({ user, onOpenAuth }: ToolsProps) {
+export default function Tools({ }: ToolsProps) {
   // Available tool definitions
   const TOOLS: ToolDefinition[] = [
     {
@@ -38,6 +43,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
       name: "YouTube Title Generator",
       description: "Harness viral cognitive loops to structure custom SEO-optimised YouTube video titles.",
       icon: "Youtube",
+      category: "YouTube",
       inputs: [
         { id: "topic", label: "Video Topic / Core Theme", type: "text", placeholder: "e.g. 10 Secrets behind modern carbon credit markets", helpText: "Describe what your video is primarily about" },
         { id: "audience", label: "Target Audience", type: "text", placeholder: "e.g. Aspiring eco-investors or business students", helpText: "Who are we tailoring the hook for?" },
@@ -50,6 +56,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
       name: "Caption/Copy Composer",
       description: "Transform raw ideas into multi-format, high-conversion captions with scroll-stopping hooks.",
       icon: "MessageSquare",
+      category: "Social Media",
       inputs: [
         { id: "description", label: "What is your post about?", type: "textarea", placeholder: "e.g. Launching a brand new minimalist productivity planner with a 20% discount code this weekend only.", helpText: "Be as descriptive as needed" },
         { id: "platform", label: "Target Platform", type: "select", options: ["Instagram Feed/Reels", "TikTok Vertical Video", "LinkedIn Professional Post", "Twitter/X Thread Starter"], defaultValue: "Instagram Feed/Reels" },
@@ -63,6 +70,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
       name: "Hashtag Strategist",
       description: "Generate structured sets of hashtags balancing popularity density for targeted SEO reach.",
       icon: "Hash",
+      category: "Social Media",
       inputs: [
         { id: "topic", label: "Main Core Topic / Keywords", type: "text", placeholder: "e.g. retro mechanical keyboards, productivity workspaces", helpText: "Enter the precise topic vertical" },
         { id: "platform", label: "Social Platform Ecosystem", type: "select", options: ["Instagram Business", "TikTok Trends", "LinkedIn Professional", "YouTube Tags"], defaultValue: "Instagram Business" },
@@ -75,6 +83,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
       name: "AI Video Scriptwriter",
       description: "Structure ready-to-narrate screenplays complete with verbal pacing hooks and visual cues.",
       icon: "FileText",
+      category: "YouTube",
       inputs: [
         { id: "topic", label: "Core Narrative Hook / Topic", type: "textarea", placeholder: "e.g. Why standard productivity advice like waking up at 5AM is actually reducing your baseline cognitive levels.", helpText: "Give details on core argument or conflict" },
         { id: "platform", label: "Video Distribution Format", type: "select", options: ["Shorts/Reels (Vertical 60s)", "YouTube Essay (L-form 8-12m)", "TikTok Insight Series (3m Video)"], defaultValue: "Shorts/Reels (Vertical 60s)" },
@@ -88,16 +97,98 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
       name: "Blog Strategy Architect",
       description: "Architect complete click-worthy article briefs with keywords and structural outlines.",
       icon: "Sparkles",
+      category: "Blogging",
       inputs: [
         { id: "topic", label: "Core SEO Theme", type: "text", placeholder: "e.g. remote work mental wellness workflows", helpText: "What main topic cluster are you designing for?" },
         { id: "niche", label: "Primary Blog Focus Domain", type: "text", placeholder: "e.g. Digital Nomads lifestyle & SaaS productivity", helpText: "Who is your blog's specific domain context?" },
         { id: "audience", label: "Target Reader Persona", type: "text", placeholder: "e.g. Work-from-home corporate mid-level executives", helpText: "Who is reading this article?" },
         { id: "targetGoals", label: "Major Keyword SEO Goal", type: "select", options: ["Build Informational Authority", "Boost High-Intent Commercial Conversions", "Maximize Viral Backlink Potentials"], defaultValue: "Build Informational Authority" }
       ]
+    },
+    {
+      id: "content-calendar",
+      name: "AI Content Calendar Generator",
+      description: "Generate a full 30-day content calendar showing what to post, when to post, and what topics to cover.",
+      icon: "Calendar",
+      category: "Strategy",
+      inputs: [
+        { id: "niche", label: "Your Niche / Industry", type: "text", placeholder: "e.g. YouTube Tech Reviews, Fitness Photography", helpText: "Describe your content focus area." }
+      ]
+    },
+    {
+      id: "viral-score",
+      name: "Viral Score Checker",
+      description: "Check the viral potential of your video title or post caption with actionable improvement suggestions.",
+      icon: "Sparkles",
+      category: "Analytics",
+      inputs: [
+        { id: "content", label: "Video Title or Post Caption", type: "textarea", placeholder: "e.g. 10 Mistakes You're Making in Your 20s", helpText: "Paste your drafted title or caption here." }
+      ]
+    },
+    {
+      id: "competitor-analysis",
+      name: "Competitor Analysis Tool",
+      description: "Analyze competitor content strategies and get ideas based on their success.",
+      icon: "Search",
+      category: "Analytics",
+      inputs: [
+        { id: "competitor", label: "Competitor Name / Handle", type: "text", placeholder: "e.g. @mkbhd, MrBeast", helpText: "Enter the channel name or handle." }
+      ]
+    },
+    {
+      id: "thumbnail-text",
+      name: "AI Thumbnail Text Generator",
+      description: "Generate emotional and high-CTR thumbnail text ideas for your videos.",
+      icon: "Image",
+      category: "YouTube",
+      inputs: [
+        { id: "topic", label: "Video Topic", type: "text", placeholder: "e.g. How to edit faster in Premiere Pro", helpText: "What is the core topic of the video?" }
+      ]
+    },
+    {
+      id: "repurpose",
+      name: "Content Repurpose Tool",
+      description: "Convert a YouTube script or blog post into Instagram captions, Twitter threads, LinkedIn posts, and more.",
+      icon: "RefreshCw",
+      category: "Social Media",
+      inputs: [
+        { id: "content", label: "Original Content (Script / Blog)", type: "textarea", placeholder: "Paste your script or article here...", helpText: "Provide the base content to repurpose." }
+      ]
+    },
+    {
+      id: "niche-finder",
+      name: "Niche Finder Tool",
+      description: "Discover the best content niches with earning potential based on your interests and skills.",
+      icon: "Compass",
+      category: "Strategy",
+      inputs: [
+        { id: "interests", label: "Your Interests & Skills", type: "text", placeholder: "e.g. coding, mechanical keyboards, videography", helpText: "List a few things you are good at or enjoy." }
+      ]
+    },
+    {
+      id: "brand-name",
+      name: "AI Brand Name Generator",
+      description: "Generate unique brand names, domain suggestions, and matching slogans.",
+      icon: "Tag",
+      category: "Branding",
+      inputs: [
+        { id: "niche", label: "Content Niche", type: "text", placeholder: "e.g. Travel Vlog, Coding Tutorials", helpText: "What is your channel or blog about?" },
+        { id: "style", label: "Brand Style", type: "select", options: ["Modern & Minimalist", "Bold & Energetic", "Professional & Corporate", "Fun & Quirky"], defaultValue: "Modern & Minimalist" }
+      ]
+    },
+    {
+      id: "hook-generator",
+      name: "Hook Generator",
+      description: "Generate powerful hooks/opening lines categorized by Curiosity, Shock, Question, and Story.",
+      icon: "Target",
+      category: "Social Media",
+      inputs: [
+        { id: "topic", label: "Video or Post Topic", type: "text", placeholder: "e.g. Why diets don't work", helpText: "What are you trying to hook the viewer into?" }
+      ]
     }
   ];
 
-  const [selectedTool, setSelectedTool] = useState<ToolType>("youtube-title");
+  const [selectedTool, setSelectedTool] = useState<ToolType | null>(null);
   const [activeGuideTab, setActiveGuideTab] = useState<"what" | "how" | "examples" | "faqs">("what");
   const [formValues, setFormValues] = useState<Record<string, any>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -105,9 +196,8 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Cloud synced user history from Firestore
+  // Local history from localStorage
   const [pastGenerations, setPastGenerations] = useState<any[]>([]);
-  const [fetchingHistory, setFetchingHistory] = useState(false);
 
   const currentTool = TOOLS.find((t) => t.id === selectedTool) || TOOLS[0];
 
@@ -122,34 +212,19 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
     setErrorMessage(null);
   }, [selectedTool]);
 
-  // Load user generation history dynamically if authenticated
+  // Load user generation history dynamically from localStorage
   useEffect(() => {
-    if (user) {
-      loadHistory();
-    } else {
-      setPastGenerations([]);
-    }
-  }, [user]);
+    loadHistory();
+  }, []);
 
-  const loadHistory = async () => {
-    setFetchingHistory(true);
+  const loadHistory = () => {
     try {
-      const q = query(
-        collection(db, "generations"),
-        where("userId", "==", user.uid),
-        orderBy("createdAt", "desc"),
-        limit(5)
-      );
-      const snapshot = await getDocs(q);
-      const items = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setPastGenerations(items);
+      const stored = localStorage.getItem("localGenerations");
+      if (stored) {
+        setPastGenerations(JSON.parse(stored).slice(0, 5));
+      }
     } catch (err) {
-      console.error("Firestore history recall error:", err);
-    } finally {
-      setFetchingHistory(false);
+      console.error("Local history recall error:", err);
     }
   };
 
@@ -157,6 +232,17 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
     setFormValues((prev) => ({
       ...prev,
       [fieldId]: value
+    }));
+  };
+
+  const handleImportText = (text: string) => {
+    let primaryField = "topic";
+    if (selectedTool === "caption") {
+      primaryField = "description";
+    }
+    setFormValues((prev) => ({
+      ...prev,
+      [primaryField]: text
     }));
   };
 
@@ -194,17 +280,21 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
 
       setGenerationResult(data.result);
 
-      // Save to Cloud Firestore dynamically if user authentication is active
-      if (user) {
-        await addDoc(collection(db, "generations"), {
-          userId: user.uid,
-          toolType: selectedTool,
-          inputs: formValues,
-          result: data.result,
-          createdAt: new Date().toISOString()
-        });
-        loadHistory(); // reload logs dynamically
-      }
+      // Save to localStorage
+      const newGen = {
+        id: Date.now().toString(),
+        toolType: selectedTool,
+        inputs: formValues,
+        result: data.result,
+        createdAt: new Date().toISOString()
+      };
+      
+      const stored = localStorage.getItem("localGenerations");
+      const currentHistory = stored ? JSON.parse(stored) : [];
+      const updatedHistory = [newGen, ...currentHistory];
+      localStorage.setItem("localGenerations", JSON.stringify(updatedHistory));
+      
+      loadHistory(); // reload logs dynamically
     } catch (err: any) {
       console.error("Tool execution error", err);
       setErrorMessage(err.message || "Failed to communicate with the text synthesis core.");
@@ -213,11 +303,16 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
     }
   };
 
-  const handleDeleteHistoryItem = async (docId: string, e: React.MouseEvent) => {
+  const handleDeleteHistoryItem = (docId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      await deleteDoc(doc(db, "generations", docId));
-      loadHistory();
+      const stored = localStorage.getItem("localGenerations");
+      if (stored) {
+        const currentHistory = JSON.parse(stored);
+        const updatedHistory = currentHistory.filter((item: any) => item.id !== docId);
+        localStorage.setItem("localGenerations", JSON.stringify(updatedHistory));
+        loadHistory();
+      }
     } catch (err) {
       console.error("Delete history item error:", err);
     }
@@ -227,29 +322,55 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
   const getToolIcon = (id: string, size = 18) => {
     switch (id) {
       case "youtube-title":
-        return <Youtube size={size} />;
+        return <YoutubeIcon size={size} />;
       case "caption":
-        return <MessageSquare size={size} />;
+        return <CaptionIcon size={size} />;
       case "hashtag":
-        return <Hash size={size} />;
+        return <HashtagIcon size={size} />;
       case "script":
-        return <FileText size={size} />;
-      default:
+        return <ScriptIcon size={size} />;
+      case "blog-idea":
+        return <SparklesIcon size={size} />;
+      case "content-calendar":
+        return <Calendar size={size} />;
+      case "viral-score":
         return <Sparkles size={size} />;
+      case "competitor-analysis":
+        return <Search size={size} />;
+      case "thumbnail-text":
+        return <Image size={size} />;
+      case "repurpose":
+        return <RefreshCw size={size} />;
+      case "niche-finder":
+        return <Compass size={size} />;
+      case "brand-name":
+        return <Tag size={size} />;
+      case "hook-generator":
+        return <Target size={size} />;
+      default:
+        return <SparklesIcon size={size} />;
     }
   };
 
   return (
-    <div id="tools-panel-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in transition-colors duration-350">
+    <div className="relative min-h-screen pb-20">
+      {/* Subtle ambient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-transparent to-cyan-50/50 dark:from-indigo-950/20 dark:via-transparent dark:to-cyan-950/20 -z-10" />
       
-      {/* Upper header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 mb-10 border-b border-gray-150 dark:border-zinc-900">
-        <div>
-          <h1 className="text-3xl font-black tracking-tight text-gray-950 dark:text-white">
-            Specialty Generative Engine
+      <div id="tools-panel-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in transition-colors duration-350">
+        
+        {/* Upper header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 mb-10 border-b border-gray-200 dark:border-zinc-800 relative z-10">
+        <div className="space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold uppercase tracking-widest">
+            <Sparkles size={12} />
+            <span>20+ Free AI Tools</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-gray-900 dark:text-white">
+            AI Tool <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-cyan-400">Directory</span>
           </h1>
-          <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
-            Bypass writer blocks and format standard YouTube, caption, script, hashtags, or blog drafts instantaneously.
+          <p className="text-sm text-gray-700 dark:text-zinc-400 max-w-xl leading-relaxed">
+            Boost your productivity with our suite of free AI-powered tools. Generate YouTube titles, scripts, hashtags, and entire content calendars in seconds.
           </p>
         </div>
 
@@ -259,40 +380,90 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        
-        {/* Left Side: Tool Switcher Navigation & History Shelf */}
-        <div className="lg:col-span-4 space-y-8">
-          
-          {/* List of available tool buttons */}
-          <div className="bg-white dark:bg-zinc-950 p-4 rounded-2xl border border-gray-150 dark:border-zinc-900 shadow-xs space-y-1">
-            <h4 className="text-3xs font-extrabold text-gray-400 dark:text-zinc-500 uppercase tracking-widest px-3 mb-2.5">
-              Choose Calibrated Model
-            </h4>
-            
-            {TOOLS.map((t) => {
-              const isActive = selectedTool === t.id;
-              return (
-                <button
-                  key={t.id}
-                  onClick={() => setSelectedTool(t.id)}
-                  className={`w-full flex items-center justify-between p-3.5 rounded-xl transition-all font-semibold text-xs text-left focus:outline-none ${
-                    isActive
-                      ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/15 scale-[1.02]"
-                      : "text-gray-750 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-900/60"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className={`${isActive ? "text-white" : "text-gray-500 dark:text-zinc-450"}`}>
-                      {getToolIcon(t.id, 16)}
-                    </span>
-                    <span>{t.name}</span>
+      <AnimatePresence mode="wait">
+        {!selectedTool ? (
+          <motion.div
+            key="grid-view"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {TOOLS.map((t) => (
+              <motion.div
+                layoutId={`tool-card-${t.id}`}
+                key={t.id}
+                onClick={() => setSelectedTool(t.id)}
+                className="cursor-pointer bg-white/90 dark:bg-zinc-900/40 backdrop-blur-md p-6 rounded-3xl border border-gray-200/50 dark:border-zinc-800/50 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group overflow-hidden relative"
+              >
+                {/* Subtle gradient background on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-cyan-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex items-start justify-between mb-5">
+                    <motion.div layoutId={`tool-icon-${t.id}`} className="p-3.5 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-white shadow-lg shadow-indigo-500/25 group-hover:scale-110 transition-transform duration-300">
+                      {getToolIcon(t.id, 24)}
+                    </motion.div>
+                    {t.category && (
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-400 border border-gray-200 dark:border-zinc-700">
+                        {t.category}
+                      </span>
+                    )}
                   </div>
-                  <ChevronRight size={14} className={isActive ? "opacity-100" : "opacity-42 text-gray-400"} />
-                </button>
-              );
-            })}
-          </div>
+                  
+                  <div className="flex-grow">
+                    <motion.h3 layoutId={`tool-title-${t.id}`} className="font-bold text-gray-900 dark:text-white text-lg mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                      {t.name}
+                    </motion.h3>
+                    <motion.p layoutId={`tool-desc-${t.id}`} className="text-sm text-gray-700 dark:text-zinc-400 line-clamp-3 leading-relaxed">
+                      {t.description}
+                    </motion.p>
+                  </div>
+                  
+                  <div className="mt-5 pt-4 border-t border-gray-200 dark:border-zinc-800/60 flex items-center justify-between text-xs font-semibold text-gray-500 dark:text-zinc-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                    <span>Try Tool</span>
+                    <ChevronRight size={16} className="transform group-hover:translate-x-1 transition-transform duration-300" />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="tool-detail-view"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="relative z-10"
+          >
+            <button
+              onClick={() => setSelectedTool(null)}
+              className="mb-6 flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white transition-colors py-2 px-1 -ml-1"
+            >
+              <ChevronRight className="rotate-180" size={16} />
+              Back to all tools
+            </button>
+
+            <motion.div
+              layoutId={`tool-card-${selectedTool}`}
+              className="bg-white dark:bg-zinc-950 p-6 md:p-8 rounded-3xl border border-gray-150 dark:border-zinc-800 shadow-2xl relative overflow-hidden"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 relative z-10">
+                {/* Left Side: Tool Info & History Shelf */}
+                <div className="lg:col-span-4 space-y-8">
+          
+                  <motion.div layoutId={`tool-icon-${selectedTool}`} className="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/50 w-max">
+                    {getToolIcon(selectedTool!, 32)}
+                  </motion.div>
+                  <div>
+                    <motion.h3 layoutId={`tool-title-${selectedTool}`} className="text-2xl font-black text-gray-900 dark:text-white mb-2">
+                      {currentTool?.name}
+                    </motion.h3>
+                    <motion.p layoutId={`tool-desc-${selectedTool}`} className="text-sm text-gray-700 dark:text-zinc-400 leading-relaxed">
+                      {currentTool?.description}
+                    </motion.p>
+                  </div>
 
           {/* Ad Slot Sidebar */}
           <AdPlaceholder type="rectangle" className="shadow-xs" />
@@ -300,93 +471,60 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
           {/* Persistent History Shelf */}
           <div className="bg-white dark:bg-zinc-950 p-6 rounded-2xl border border-gray-150 dark:border-zinc-900 shadow-xs space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-zinc-900">
-              <h4 className="text-[11px] font-black uppercase text-gray-400 dark:text-zinc-500 tracking-wider flex items-center gap-1.5">
+              <h4 className="text-[11px] font-black uppercase text-gray-700 dark:text-zinc-500 tracking-wider flex items-center gap-1.5">
                 <Bookmark size={13} className="text-indigo-500" />
                 Durable Creative History
               </h4>
-              <span className="text-3xs font-mono bg-gray-100 dark:bg-zinc-900 px-1.5 py-0.5 rounded text-gray-500">
+              <span className="text-3xs font-mono bg-gray-100 dark:bg-zinc-900 px-1.5 py-0.5 rounded text-gray-700">
                 Cloud Sync
               </span>
             </div>
 
-            {user ? (
-              <div className="space-y-3">
-                {fetchingHistory ? (
-                  <div className="flex items-center justify-center py-6 text-gray-400">
-                    <Loader2 size={16} className="animate-spin mr-2" />
-                    <span className="text-xs">Recalling Firestore logs...</span>
-                  </div>
-                ) : pastGenerations.length > 0 ? (
-                  pastGenerations.map((gen) => (
-                    <div
-                      key={gen.id}
-                      onClick={() => {
-                        setGenerationResult(gen.result);
-                        setFormValues(gen.inputs);
-                        setSelectedTool(gen.toolType);
-                      }}
-                      className="group p-3 rounded-xl border border-gray-100 dark:border-zinc-90 w-full text-left bg-gray-50/40 hover:bg-gray-50 dark:bg-zinc-905/20 dark:hover:bg-zinc-900 cursor-pointer transition-all flex items-center justify-between"
-                    >
-                      <div className="max-w-[80%]">
-                        <div className="flex items-center gap-1.5 mb-1">
-                          <span className="text-indigo-500">{getToolIcon(gen.toolType, 12)}</span>
-                          <span className="text-3xs font-bold text-gray-800 dark:text-zinc-300 capitalize truncate">
-                            {gen.toolType.replace("-", " ")}
-                          </span>
-                        </div>
-                        <p className="text-4xs text-gray-400 dark:text-zinc-500 font-mono flex items-center gap-1">
-                          <Calendar size={9} />
-                          {new Date(gen.createdAt).toLocaleDateString()}
-                        </p>
+            <div className="space-y-3">
+              {pastGenerations.length > 0 ? (
+                pastGenerations.map((gen) => (
+                  <div
+                    key={gen.id}
+                    onClick={() => {
+                      setGenerationResult(gen.result);
+                      setFormValues(gen.inputs);
+                      setSelectedTool(gen.toolType);
+                    }}
+                    className="group p-3 rounded-xl border border-gray-100 dark:border-zinc-90 w-full text-left bg-gray-50/40 hover:bg-gray-50 dark:bg-zinc-905/20 dark:hover:bg-zinc-900 cursor-pointer transition-all flex items-center justify-between"
+                  >
+                    <div className="max-w-[80%]">
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <span className="text-indigo-500">{getToolIcon(gen.toolType, 12)}</span>
+                        <span className="text-3xs font-bold text-gray-800 dark:text-zinc-300 capitalize truncate">
+                          {gen.toolType.replace("-", " ")}
+                        </span>
                       </div>
-                      <button
-                        onClick={(e) => handleDeleteHistoryItem(gen.id, e)}
-                        className="opacity-0 group-hover:opacity-100 p-1.5 rounded text-gray-400 hover:text-red-500 dark:hover:bg-zinc-800 transition-all focus:outline-none"
-                        title="Delete record logs"
-                      >
-                        <Trash2 size={12} />
-                      </button>
+                      <p className="text-4xs text-gray-700 dark:text-zinc-500 font-mono flex items-center gap-1">
+                        <Calendar size={9} />
+                        {new Date(gen.createdAt).toLocaleDateString()}
+                      </p>
                     </div>
-                  ))
-                ) : (
-                  <p className="text-2xs text-gray-400 dark:text-zinc-500 py-4 text-center">
-                    No generated histories logs found. Make edits and click generate!
-                  </p>
-                )}
-              </div>
-            ) : (
-              <div className="text-center py-4 space-y-3">
-                <p className="text-2xs text-gray-500 dark:text-zinc-400 leading-relaxed">
-                  Join structural workspace accounts to synchronise history and bypass temporary browser cache limits.
+                    <button
+                      onClick={(e) => handleDeleteHistoryItem(gen.id, e)}
+                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded text-gray-700 hover:text-red-500 dark:hover:bg-zinc-800 transition-all focus:outline-none"
+                      title="Delete record logs"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p className="text-2xs text-gray-700 dark:text-zinc-500 py-4 text-center">
+                  No generated histories logs found. Make edits and click generate!
                 </p>
-                <button
-                  type="button"
-                  onClick={onOpenAuth}
-                  className="py-1.5 px-3.5 rounded-lg text-2xs font-extrabold text-white bg-indigo-600 hover:bg-indigo-700 transition-all"
-                >
-                  Durable Login Sync
-                </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 
         {/* Right Side: Input Form & Response Previewer Display */}
         <div className="lg:col-span-8 space-y-8">
           
-          {/* Model Description Bar */}
-          <div className="p-5 rounded-2xl bg-indigo-50/40 dark:bg-indigo-950/20 border border-indigo-100/30 dark:border-indigo-900/10 flex gap-4 items-start">
-            <span className="p-3 rounded-xl bg-white dark:bg-zinc-950 text-indigo-600 shadow-xs mr-1">
-              {getToolIcon(currentTool.id, 20)}
-            </span>
-            <div>
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white">{currentTool.name}</h3>
-              <p className="text-xs text-gray-500 dark:text-zinc-450 mt-0.5 leading-relaxed">
-                {currentTool.description}
-              </p>
-            </div>
-          </div>
-
           {/* Tool Guidelines & Knowledge Hub */}
           {(() => {
             const guide = TOOL_GUIDES[currentTool.id];
@@ -399,7 +537,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                     <span className="p-1.5 rounded-lg bg-indigo-550 text-white">
                       <BookOpen size={14} />
                     </span>
-                    <h4 className="text-2xs font-extrabold uppercase tracking-widest text-gray-500 dark:text-zinc-450">
+                    <h4 className="text-2xs font-extrabold uppercase tracking-widest text-gray-700 dark:text-zinc-450">
                       Tool Documentation & Playbook
                     </h4>
                   </div>
@@ -426,7 +564,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all focus:outline-none ${
                           isActive
                             ? "bg-indigo-50 dark:bg-indigo-950/45 text-indigo-600 dark:text-indigo-400 border border-indigo-100/30 dark:border-indigo-900/20"
-                            : "text-gray-500 dark:text-zinc-450 hover:bg-gray-50 dark:hover:bg-zinc-900/50"
+                            : "text-gray-700 dark:text-zinc-450 hover:bg-gray-50 dark:hover:bg-zinc-900/50"
                         }`}
                       >
                         <TabIcon size={12} />
@@ -437,7 +575,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                 </div>
 
                 {/* Dynamic Content Panel rendering depending on tab */}
-                <div className="text-xs leading-relaxed text-gray-600 dark:text-zinc-350">
+                <div className="text-xs leading-relaxed text-gray-700 dark:text-zinc-350">
                   {activeGuideTab === "what" && (
                     <div className="space-y-3">
                       <p>{guide.whatIsIt}</p>
@@ -447,7 +585,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                   {activeGuideTab === "how" && (
                     <div className="space-y-3">
                       <p className="font-bold text-gray-900 dark:text-white">Step-by-Step Walkthrough:</p>
-                      <ul className="list-decimal pl-5 space-y-1.5 text-xs text-gray-600 dark:text-zinc-350">
+                      <ul className="list-decimal pl-5 space-y-1.5 text-xs text-gray-700 dark:text-zinc-350">
                         {guide.howToUse.map((step, idx) => (
                           <li key={idx} className="marker:text-indigo-500 marker:font-black">
                             {step}
@@ -463,14 +601,14 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                         <div key={idx} className="p-4 rounded-xl bg-gray-50/60 dark:bg-zinc-900/30 border border-gray-100 dark:border-zinc-850/70 space-y-2">
                           <div className="flex items-center gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            <span className="font-mono text-[10px] uppercase font-bold text-gray-400 dark:text-zinc-500">Sample Parameters Entry</span>
+                            <span className="font-mono text-[10px] uppercase font-bold text-gray-700 dark:text-zinc-500">Sample Parameters Entry</span>
                           </div>
-                          <p className="font-mono text-3xs text-gray-500 dark:text-zinc-400 italic bg-white dark:bg-zinc-950/50 p-2.5 rounded-lg border border-gray-100/30 dark:border-zinc-900/40">
+                          <p className="font-mono text-3xs text-gray-700 dark:text-zinc-400 italic bg-white dark:bg-zinc-950/50 p-2.5 rounded-lg border border-gray-100/30 dark:border-zinc-900/40">
                             {ex.input}
                           </p>
                           <div className="flex items-center gap-2 pt-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-                            <span className="font-mono text-[10px] uppercase font-bold text-gray-400 dark:text-zinc-500">Output Result Preview</span>
+                            <span className="font-mono text-[10px] uppercase font-bold text-gray-700 dark:text-zinc-500">Output Result Preview</span>
                           </div>
                           <p className="font-mono text-3xs text-gray-800 dark:text-zinc-200 bg-white dark:bg-zinc-950/50 p-2.5 rounded-lg border border-gray-100/30 dark:border-zinc-900/40 whitespace-pre-wrap">
                             {ex.output}
@@ -488,7 +626,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                             <span className="text-indigo-500 font-mono text-4xs bg-indigo-50 dark:bg-indigo-950/50 px-1 py-0.5 rounded">Q</span>
                             {faq.question}
                           </h5>
-                          <p className="text-gray-550 dark:text-zinc-400 text-xs pl-5 leading-relaxed">
+                          <p className="text-gray-700 dark:text-zinc-400 text-xs pl-5 leading-relaxed">
                             {faq.answer}
                           </p>
                         </div>
@@ -518,7 +656,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                         placeholder={field.placeholder}
                         value={formValues[field.id] || ""}
                         onChange={(e) => handleInputChange(field.id, e.target.value)}
-                        className="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-200 dark:border-zinc-850 dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-1.5 focus:ring-indigo-500 focus:outline-none transition-all"
+                        className="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-400 dark:border-zinc-800 dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-600 dark:placeholder-zinc-500 focus:ring-1.5 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all"
                       />
                     )}
 
@@ -529,7 +667,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                         placeholder={field.placeholder}
                         value={formValues[field.id] || ""}
                         onChange={(e) => handleInputChange(field.id, e.target.value)}
-                        className="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-200 dark:border-zinc-850 dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-1.5 focus:ring-indigo-500 focus:outline-none transition-all"
+                        className="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-400 dark:border-zinc-800 dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-600 dark:placeholder-zinc-500 focus:ring-1.5 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all"
                       />
                     )}
 
@@ -537,7 +675,7 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                       <select
                         value={formValues[field.id] || ""}
                         onChange={(e) => handleInputChange(field.id, e.target.value)}
-                        className="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-200 dark:border-zinc-850 dark:bg-zinc-900/40 text-gray-900 dark:text-white focus:ring-1.5 focus:ring-indigo-500 focus:outline-none transition-all cursor-pointer"
+                        className="w-full text-xs px-3.5 py-3 rounded-xl border border-gray-400 dark:border-zinc-800 dark:bg-zinc-900/40 text-gray-900 dark:text-white focus:ring-1.5 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all cursor-pointer"
                       >
                         {field.options?.map((opt) => (
                           <option key={opt} value={opt} className="dark:bg-zinc-950 font-sans text-xs">
@@ -556,14 +694,14 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
                           onChange={(e) => handleInputChange(field.id, e.target.checked)}
                           className="w-4 h-4 rounded text-indigo-600 border-gray-300 dark:border-zinc-800 focus:ring-indigo-500 focus:outline-none cursor-pointer"
                         />
-                        <label htmlFor={`chk-${field.id}`} className="text-2xs text-gray-500 dark:text-zinc-400 cursor-pointer">
+                        <label htmlFor={`chk-${field.id}`} className="text-2xs text-gray-700 dark:text-zinc-400 cursor-pointer">
                           Activate Option Profile
                         </label>
                       </div>
                     )}
 
                     {field.helpText && (
-                      <p className="text-[10px] text-gray-400 dark:text-zinc-550 italic font-medium flex gap-1 items-center">
+                      <p className="text-[10px] text-gray-700 dark:text-zinc-550 italic font-medium flex gap-1 items-center">
                         <Info size={10} />
                         {field.helpText}
                       </p>
@@ -596,15 +734,15 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
               
               {/* Box Header */}
               <div className="bg-white dark:bg-zinc-950 px-5 py-3 border-b border-gray-100 dark:border-zinc-900 flex items-center justify-between">
-                <span className="text-3xs font-extrabold text-gray-400 dark:text-zinc-500 uppercase tracking-widest flex items-center gap-1.5">
-                  <RefreshCw size={11} className={isLoading ? "animate-spin text-indigo-500" : "text-gray-450"} />
+                <span className="text-3xs font-extrabold text-gray-700 dark:text-zinc-500 uppercase tracking-widest flex items-center gap-1.5">
+                  <RefreshCw size={11} className={isLoading ? "animate-spin text-indigo-500" : "text-gray-700"} />
                   Execution Result
                 </span>
 
                 {generationResult && (
                   <button
                     onClick={handleCopy}
-                    className="p-1.5 rounded-lg border border-gray-100 hover:bg-gray-50 dark:border-zinc-850 dark:hover:bg-zinc-900 text-gray-500 hover:text-gray-900 dark:text-zinc-400 dark:hover:text-zinc-200 transition-all flex items-center gap-1.5 focus:outline-none"
+                    className="p-1.5 rounded-lg border border-gray-100 hover:bg-gray-50 dark:border-zinc-850 dark:hover:bg-zinc-900 text-gray-700 hover:text-gray-900 dark:text-zinc-400 dark:hover:text-zinc-200 transition-all flex items-center gap-1.5 focus:outline-none"
                     title="Copy output response"
                   >
                     {copied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
@@ -615,24 +753,44 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
 
               {/* Box Body Text Area */}
               <div className="flex-1 p-6 overflow-y-auto leading-relaxed text-xs">
-                {errorMessage ? (
+                {isLoading ? (
+                  <div className="flex flex-col items-center justify-center h-full text-center p-4">
+                    <div className="relative flex items-center justify-center w-12 h-12 mb-4">
+                      <div className="absolute inset-0 border-4 border-indigo-200 dark:border-indigo-900/30 rounded-full"></div>
+                      <div className="absolute inset-0 border-4 border-indigo-600 dark:border-indigo-500 rounded-full border-t-transparent animate-spin"></div>
+                    </div>
+                    <h5 className="text-xs font-bold text-gray-700 dark:text-zinc-300">Generating output...</h5>
+                    <p className="text-4xs text-gray-700 dark:text-zinc-500 max-w-xs mt-1 animate-pulse">
+                      Fetching your data and processing AI models
+                    </p>
+                  </div>
+                ) : errorMessage ? (
                   <div className="flex flex-col items-center justify-center h-full text-center p-4">
                     <AlertCircle size={24} className="text-rose-500 mb-2" />
                     <h5 className="text-xs font-bold text-rose-600 dark:text-rose-450">Generation Failure</h5>
-                    <p className="text-4xs text-gray-400 dark:text-zinc-500 max-w-xs mt-1">
+                    <p className="text-4xs text-gray-700 dark:text-zinc-500 max-w-xs mt-1">
                       {errorMessage}
                     </p>
                   </div>
                 ) : generationResult ? (
-                  <div className="text-gray-800 dark:text-zinc-200 space-y-4 font-sans leading-relaxed whitespace-pre-wrap select-text selection:bg-indigo-500/20">
-                    {/* Raw render formatting lists and bold matches cleanly */}
-                    {generationResult}
+                  <div className="flex flex-col h-full">
+                    <div className="flex-1 text-gray-800 dark:text-zinc-200 space-y-4 font-sans leading-relaxed whitespace-pre-wrap select-text selection:bg-indigo-500/20 mb-6">
+                      {/* Raw render formatting lists and bold matches cleanly */}
+                      {generationResult}
+                    </div>
+                    <button
+                      onClick={handleCopy}
+                      className="w-full py-3 px-4 rounded-xl font-bold text-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2 shadow-sm"
+                    >
+                      {copied ? <Check size={16} /> : <Copy size={16} />}
+                      {copied ? "Copied to Clipboard!" : "Copy to Clipboard"}
+                    </button>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full text-center opacity-65 p-4 pointer-events-none select-none">
-                    <MousePointer size={28} className="text-gray-400 dark:text-zinc-700 mb-2.5 animate-bounce" />
+                    <MousePointer size={28} className="text-gray-700 dark:text-zinc-700 mb-2.5 animate-bounce" />
                     <h5 className="text-2xs font-bold text-gray-700 dark:text-zinc-350">Previewer Ready</h5>
-                    <p className="text-3xs text-gray-400 dark:text-zinc-550 mt-1 max-w-2xs leading-relaxed">
+                    <p className="text-3xs text-gray-700 dark:text-zinc-550 mt-1 max-w-2xs leading-relaxed">
                       Fill out the core parameters model forms on the left, then click Generate to output calibrated Copy patterns.
                     </p>
                   </div>
@@ -641,18 +799,31 @@ export default function Tools({ user, onOpenAuth }: ToolsProps) {
 
               {/* Mini Ad Box bottom sticker */}
               <div className="bg-white/40 dark:bg-zinc-950/20 px-5 py-2 border-t border-gray-100 dark:border-zinc-900/60 text-center">
-                <span className="text-[10px] font-medium text-gray-400 dark:text-zinc-650">
+                <span className="text-[10px] font-medium text-gray-700 dark:text-zinc-650">
                   AdSense automated matching slot CT-ADS-MINI active
                 </span>
               </div>
             </div>
-
           </div>
-
         </div>
-
       </div>
+    </motion.div>
+  </motion.div>
+)}
+      </AnimatePresence>
 
+      {/* Dimmed background overlay */}
+      <AnimatePresence>
+        {selectedTool && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/5 dark:bg-black/40 z-0 pointer-events-none backdrop-blur-[2px]"
+          />
+        )}
+      </AnimatePresence>
+    </div>
     </div>
   );
 }

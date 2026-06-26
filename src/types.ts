@@ -7,7 +7,7 @@ export interface UserProfile {
   generationCount: number;
 }
 
-export type ToolType = "youtube-title" | "caption" | "hashtag" | "script" | "blog-idea";
+export type ToolType = "youtube-title" | "caption" | "hashtag" | "script" | "blog-idea" | "content-calendar" | "viral-score" | "competitor-analysis" | "thumbnail-text" | "repurpose" | "niche-finder" | "brand-name" | "hook-generator";
 
 export interface ToolInputField {
   id: string;
@@ -24,6 +24,7 @@ export interface ToolDefinition {
   name: string;
   description: string;
   icon: string; // lucide class name name mapping
+  category?: string;
   inputs: ToolInputField[];
 }
 

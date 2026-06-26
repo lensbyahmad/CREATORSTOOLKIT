@@ -7,18 +7,18 @@ interface AboutProps {
 export default function About({ onNavigate }: AboutProps) {
   const corporateCoreValues = [
     {
-      title: "Algorithmic Precision",
-      description: "We don't support safe, vague promises. We study actual retention graphs and align our copy guidelines to meet performance specs from millions of views.",
+      title: "Helpful Suggestions",
+      description: "We focus on providing practical, usable text that helps you get past writer's block.",
       icon: Award
     },
     {
-      title: "Responsible Automation",
-      description: "Generative AI is a high-speed synthesizer, not a thought replacement. We build copywriting tooling that preserves actual creative authority.",
+      title: "Tools, Not Replacements",
+      description: "AI is here to help you draft ideas quickly. We want you to maintain your unique creative voice.",
       icon: ShieldCheck
     },
     {
-      title: "Creator-First Mechanics",
-      description: "We minimize unnecessary login friction or paid walls. We focus on lightweight, highly robust single-screen architectures with fluid responsiveness.",
+      title: "Easy to Use",
+      description: "We try to keep our tools simple, fast, and free of complicated logins or subscriptions.",
       icon: Heart
     }
   ];
@@ -26,43 +26,46 @@ export default function About({ onNavigate }: AboutProps) {
   const milestonesTimeline = [
     {
       date: "January 2025",
-      title: "Founding Research & Inception",
-      desc: "Our lab was founded with the conviction that generative AI was outputting generic slop. We began parsing and labeling video script hooks and CTA click-rates manually."
+      title: "Initial Ideas",
+      desc: "We started experimenting with how language models could help outline video scripts and come up with ideas."
     },
     {
       date: "August 2025",
-      title: "The Beta Algorithmic Model",
-      desc: "Launched our first internal title testing engine. Tested with 500 early-adopter YouTube creators, showing an average 3.1x lift in early hook retention."
+      title: "First Prototype",
+      desc: "We tested our first set of tools with a small group of creators to see if they found them useful."
     },
     {
       date: "February 2026",
-      title: "CreatorsToolkit v2 Released",
-      desc: "Fully integrated the latest advanced Gemini API workflows. Released standard single-view tools for titles, captions, hashtags, and script screenplays."
+      title: "Launch",
+      desc: "We launched the site with simple tools for YouTube titles, captions, and scripts."
     },
     {
-      date: "June 2026 (Present)",
-      title: "Fostering Global Audiences",
-      desc: "Serving thousands of concurrent creators worldwide. Enabling independent bloggers, copywriters, and video producers to publish optimized content without creative burnout."
+      date: "Present",
+      title: "Growing Tools",
+      desc: "We continue to update our platform based on feedback from bloggers and video creators."
     }
   ];
 
   const leadershipTeam = [
     {
       name: "Marcus Sterling",
-      role: "Founder & Principal Algorithmic Director",
-      bio: "Former platform growth lead with 12 years of experience handling viewer analytics datasets. Marcus shapes the core narrative guidelines behind our tools.",
+      role: "Founder",
+      bio: "Marcus has spent years creating content and managing digital communities. He focuses on the product direction.",
+      credentials: "Over 10 years in digital media",
       avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200"
     },
     {
       name: "Elana Kim",
-      role: "Head of Copywriting Theory & Semantics",
-      bio: "Editorial author and veteran marketer. Elana ensures all multi-platform models reject generic AI buzzwords and generate engaging copy.",
+      role: "Lead Editor",
+      bio: "Elana is a writer and editor who helps make sure our generated outputs are clear and engaging.",
+      credentials: "Former tech editor and content strategist",
       avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200"
     },
     {
       name: "Dr. Darnell Jefferson",
-      role: "Chief Data & Retention Scientist",
-      bio: "Ph.D. in Cognitive Psychology focusing on mobile screen scrolling behaviors. Darnell spearheads our social search optimization models.",
+      role: "Researcher",
+      bio: "Darnell studies human-computer interaction and helps design our tools to be as intuitive as possible.",
+      credentials: "Ph.D. Cognitive Psychology",
       avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200"
     }
   ];
@@ -81,10 +84,10 @@ export default function About({ onNavigate }: AboutProps) {
             ABOUT CREATORSTOOLKIT
           </span>
           <h1 className="text-3xl sm:text-5xl font-black font-sans tracking-tight text-gray-950 dark:text-white leading-tight">
-            Pioneering the Future of <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-400">Creative Pacing</span>
+            Building Helpful Tools for <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-400">Content Creators</span>
           </h1>
-          <p className="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 leading-relaxed max-w-2xl mx-auto font-medium">
-            CreatorsToolkit was established in 2025 as a dedicated laboratory focusing on algorithmic writing, viewer attention kinetics, and social search optimization.
+          <p className="text-xs sm:text-sm text-gray-700 dark:text-zinc-400 leading-relaxed max-w-2xl mx-auto font-medium">
+            CreatorsToolkit was established to help digital creators save time and overcome writer's block with simple, easy-to-use AI tools.
           </p>
         </div>
       </section>
@@ -94,16 +97,16 @@ export default function About({ onNavigate }: AboutProps) {
         <div className="lg:col-span-7 space-y-6">
           <div className="flex items-center gap-2 text-indigo-500">
             <Cpu size={16} />
-            <h4 className="text-3xs uppercase font-extrabold tracking-widest">Bridging AI with Real Metrics</h4>
+            <h4 className="text-3xs uppercase font-extrabold tracking-widest">Our Mission</h4>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black font-sans text-gray-950 dark:text-white leading-tight">
-            Helping Creators Worldwide Bypass the Blank Page Stagnation.
+            Helping Creators Bypass the Blank Page.
           </h2>
-          <p className="text-xs text-gray-600 dark:text-zinc-400 leading-relaxed">
-            Every day, millions of writers, copy editors, and video producers sit in front of cold script processors facing total stagnation. Traditional generative tools answer this with flowery, repetitive boilerplate paragraphs that generic prompt parameters output. These text formats bore viewers and fail on standard retention curves.
+          <p className="text-xs text-gray-700 dark:text-zinc-400 leading-relaxed">
+            Every day, writers and video producers sit in front of a blank screen trying to find the perfect idea. We believe that technology should support human creativity by providing practical starting points.
           </p>
-          <p className="text-xs text-gray-600 dark:text-zinc-400 leading-relaxed">
-            CreatorsToolkit operates on a fundamentally different blueprint. We break copy structures down to the atomic level—isolating micro-blocks of verbal tension, open cognitive interest loops, structured lists, and pacing cues. By combining state-of-the-art server-side Gemini models with verified audience engagement criteria, we enable you to ship optimized titles, captions, and script structures continuously.
+          <p className="text-xs text-gray-700 dark:text-zinc-400 leading-relaxed">
+            We built CreatorsToolkit to be simple and helpful. By studying successful content patterns, our tools help you structure your scripts, optimize your titles, and generate ideas quickly, so you can spend more time actually making things.
           </p>
           
           <div className="p-4 rounded-xl border border-dashed border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/20 dark:bg-indigo-950/20 flex gap-3.5 items-start">
@@ -111,9 +114,9 @@ export default function About({ onNavigate }: AboutProps) {
               <ShieldAlert size={16} />
             </span>
             <div>
-              <h5 className="text-xs font-bold text-gray-900 dark:text-white">Our Guardrail Pledge</h5>
-              <p className="text-[11px] text-gray-400 dark:text-zinc-400 leading-relaxed mt-0.5">
-                We strictly oppose automated mass content farms on social feeds. Our tools are designed specifically to support, empower, and enhance the creative expression of physical individuals.
+              <h5 className="text-xs font-bold text-gray-900 dark:text-white">Our Pledge</h5>
+              <p className="text-[11px] text-gray-700 dark:text-zinc-400 leading-relaxed mt-0.5">
+                We design our tools to help real individuals express themselves. We encourage you to always edit and add your personal touch to any generated content.
               </p>
             </div>
           </div>
@@ -134,6 +137,7 @@ export default function About({ onNavigate }: AboutProps) {
             <img
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800"
               alt="Creative Team Working"
+              loading="lazy"
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover saturate-0 hover:saturate-100 transition-all duration-700"
             />
@@ -147,7 +151,7 @@ export default function About({ onNavigate }: AboutProps) {
           <h2 className="text-xl sm:text-2xl font-black font-sans text-gray-950 dark:text-white">
             Historical Development Milestones
           </h2>
-          <p className="text-4xs text-gray-400 dark:text-zinc-500 uppercase tracking-widest font-mono">
+          <p className="text-4xs text-gray-700 dark:text-zinc-500 uppercase tracking-widest font-mono">
             How we scaled from an analytics sandbox to serving thousands of creators
           </p>
         </div>
@@ -162,12 +166,12 @@ export default function About({ onNavigate }: AboutProps) {
                 <span className="text-3xs font-mono font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded">
                   {mil.date}
                 </span>
-                <span className="text-4xs font-mono text-gray-400">0{idx + 1}</span>
+                <span className="text-4xs font-mono text-gray-700">0{idx + 1}</span>
               </div>
               <h4 className="text-xs font-bold text-gray-900 dark:text-white">
                 {mil.title}
               </h4>
-              <p className="text-[11px] text-gray-500 dark:text-zinc-450 leading-relaxed">
+              <p className="text-[11px] text-gray-700 dark:text-zinc-450 leading-relaxed">
                 {mil.desc}
               </p>
             </div>
@@ -181,7 +185,7 @@ export default function About({ onNavigate }: AboutProps) {
           <h2 className="text-xl sm:text-2xl font-black font-sans text-gray-950 dark:text-white">
             Our Operating Pillars
           </h2>
-          <p className="text-4xs text-gray-450 dark:text-zinc-500 uppercase tracking-widest font-mono">
+          <p className="text-4xs text-gray-700 dark:text-zinc-500 uppercase tracking-widest font-mono">
             The core structures which navigate our design and engineering models
           </p>
         </div>
@@ -201,7 +205,7 @@ export default function About({ onNavigate }: AboutProps) {
                   <h3 className="text-xs font-bold text-gray-950 dark:text-white mb-2">
                     {val.title}
                   </h3>
-                  <p className="text-2xs text-gray-500 dark:text-zinc-400 leading-relaxed">
+                  <p className="text-2xs text-gray-700 dark:text-zinc-400 leading-relaxed">
                     {val.description}
                   </p>
                 </div>
@@ -217,7 +221,7 @@ export default function About({ onNavigate }: AboutProps) {
           <h2 className="text-xl sm:text-2xl font-black font-sans text-gray-950 dark:text-white">
             The Minds Behind the Engine
           </h2>
-          <p className="text-4xs text-gray-450 dark:text-zinc-500 uppercase tracking-widest font-mono">
+          <p className="text-4xs text-gray-700 dark:text-zinc-500 uppercase tracking-widest font-mono">
             Scientific advisory directors and copywriting strategists
           </p>
         </div>
@@ -232,19 +236,25 @@ export default function About({ onNavigate }: AboutProps) {
                 <img
                   src={lead.avatar}
                   alt={lead.name}
+                  loading="lazy"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover saturate-0 hover:saturate-100 transition-all"
                 />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 mb-2">
                 <h4 className="text-xs font-bold text-gray-950 dark:text-white">{lead.name}</h4>
                 <p className="text-4xs font-bold font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/30 px-2 py-0.5 rounded">
                   {lead.role}
                 </p>
               </div>
-              <p className="text-2xs text-gray-500 dark:text-zinc-450 leading-relaxed">
+              <p className="text-2xs text-gray-700 dark:text-zinc-450 leading-relaxed mb-4">
                 {lead.bio}
               </p>
+              <div className="mt-auto pt-4 border-t border-gray-100 dark:border-zinc-800/50 w-full">
+                <p className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400 italic">
+                  {lead.credentials}
+                </p>
+              </div>
             </div>
           ))}
         </div>
@@ -260,7 +270,7 @@ export default function About({ onNavigate }: AboutProps) {
           <h4 className="text-sm font-bold text-gray-900 dark:text-white">
             Need custom model profiles for your corporate publishing deck?
           </h4>
-          <p className="text-2xs text-gray-500 dark:text-zinc-400 leading-relaxed">
+          <p className="text-2xs text-gray-700 dark:text-zinc-400 leading-relaxed">
             We license custom bulk narrative templates, keyword strategy fine-tunings, and direct server integrations for enterprise marketing bureaus and agency syndicates.
           </p>
         </div>

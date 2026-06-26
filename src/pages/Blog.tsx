@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Search, ArrowLeft, Calendar, Clock, User, Bookmark, Heart, Grid, List, ChevronRight, Share2 } from "lucide-react";
+import { Search, ArrowLeft, Calendar, Clock, User, Bookmark, Heart, Grid, List, ChevronRight, Share2, Twitter, Linkedin, Link } from "lucide-react";
 import { BLOG_POSTS, BLOG_CATEGORIES } from "../data/blog";
 import AdPlaceholder from "../components/AdPlaceholder";
 
@@ -59,6 +59,19 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
     }
   };
 
+  const shareOnTwitter = (title: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = window.location.href;
+    const text = encodeURIComponent(`Check out this post: ${title}`);
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(url)}`, '_blank');
+  };
+
+  const shareOnLinkedIn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = window.location.href;
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+  };
+
   // 1. ARTICLE DETAILS SUBPAGE VIEW
   if (activePost) {
     // Generate related posts filtering by category
@@ -70,7 +83,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
         {/* Navigation Bar Back Button */}
         <button
           onClick={onBackToBlogList}
-          className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 mb-8 px-3 py-1.5 rounded-lg border border-gray-150 dark:border-zinc-850 hover:bg-gray-50 dark:hover:bg-zinc-900 transition-all focus:outline-none"
+          className="inline-flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 mb-8 px-3 py-1.5 rounded-lg border border-gray-150 dark:border-zinc-850 hover:bg-gray-50 dark:hover:bg-zinc-900 transition-all focus:outline-none"
         >
           <ArrowLeft size={14} />
           Back to Playbooks Index
@@ -82,7 +95,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
           <article className="lg:col-span-8 space-y-6">
             
             {/* SEO Tagline & Reading info */}
-            <div className="flex flex-wrap items-center gap-3 text-3xs font-mono font-bold uppercase tracking-wider text-gray-500">
+            <div className="flex flex-wrap items-center gap-3 text-3xs font-mono font-bold uppercase tracking-wider text-gray-700">
               <span className="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-md">
                 {activePost.category}
               </span>
@@ -103,7 +116,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
               {activePost.title}
             </h1>
 
-            <p className="text-sm text-gray-500 dark:text-zinc-400 italic font-medium leading-relaxed border-l-2 border-indigo-500 pl-4 py-1 bg-gray-50/50 dark:bg-zinc-900/10 rounded-r-xl">
+            <p className="text-sm text-gray-700 dark:text-zinc-400 italic font-medium leading-relaxed border-l-2 border-indigo-500 pl-4 py-1 bg-gray-50/50 dark:bg-zinc-900/10 rounded-r-xl">
               "{activePost.excerpt}"
             </p>
 
@@ -113,12 +126,13 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                 <img
                   src={activePost.author.avatar}
                   alt={activePost.author.name}
+                  loading="lazy"
                   referrerPolicy="no-referrer"
                   className="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-zinc-800"
                 />
                 <div>
                   <h4 className="text-xs font-bold text-gray-900 dark:text-white">{activePost.author.name}</h4>
-                  <p className="text-[10px] text-gray-400 dark:text-zinc-500">{activePost.author.role}</p>
+                  <p className="text-[10px] text-gray-700 dark:text-zinc-500">{activePost.author.role}</p>
                 </div>
               </div>
 
@@ -129,7 +143,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                   className={`p-2 rounded-xl border focus:outline-none transition-all ${
                     liked[activePost.id]
                       ? "bg-rose-50 border-rose-100 text-rose-500 dark:bg-rose-950/20 dark:border-rose-900"
-                      : "border-gray-200 hover:bg-gray-50 text-gray-400 dark:border-zinc-850 dark:hover:bg-zinc-900"
+                      : "border-gray-200 hover:bg-gray-50 text-gray-700 dark:border-zinc-850 dark:hover:bg-zinc-900"
                   }`}
                   title="Like Article"
                 >
@@ -140,7 +154,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                   className={`p-2 rounded-xl border focus:outline-none transition-all ${
                     bookmarked[activePost.id]
                       ? "bg-indigo-50 border-indigo-150 text-indigo-500 dark:bg-indigo-950/20 dark:border-indigo-900"
-                      : "border-gray-200 hover:bg-gray-50 text-gray-400 dark:border-zinc-850 dark:hover:bg-zinc-900"
+                      : "border-gray-200 hover:bg-gray-50 text-gray-700 dark:border-zinc-850 dark:hover:bg-zinc-900"
                   }`}
                   title="Bookmark Article"
                 >
@@ -148,10 +162,24 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                 </button>
                 <button
                   onClick={(e) => handleShare(activePost.slug, activePost.title, e)}
-                  className="p-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-400 dark:border-zinc-850 dark:hover:bg-zinc-900 transition-all focus:outline-none"
-                  title="Share Article Link"
+                  className="p-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 dark:border-zinc-850 dark:hover:bg-zinc-900 transition-all focus:outline-none"
+                  title="Copy Link"
                 >
-                  <Share2 size={14} />
+                  <Link size={14} />
+                </button>
+                <button
+                  onClick={(e) => shareOnTwitter(activePost.title, e)}
+                  className="p-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-[#1DA1F2] dark:border-zinc-850 dark:hover:bg-zinc-900 transition-all focus:outline-none"
+                  title="Share on Twitter"
+                >
+                  <Twitter size={14} />
+                </button>
+                <button
+                  onClick={(e) => shareOnLinkedIn(e)}
+                  className="p-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-[#0A66C2] dark:border-zinc-850 dark:hover:bg-zinc-900 transition-all focus:outline-none"
+                  title="Share on LinkedIn"
+                >
+                  <Linkedin size={14} />
                 </button>
               </div>
             </div>
@@ -161,6 +189,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
               <img
                 src={activePost.imageUrl}
                 alt={activePost.title}
+                loading="lazy"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
               />
@@ -206,7 +235,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
               {activePost.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-3 py-1 rounded-lg text-3xs font-mono font-bold bg-gray-100 hover:bg-indigo-50 hover:text-indigo-600 dark:bg-zinc-900 dark:hover:bg-zinc-850 dark:hover:text-indigo-400 text-gray-550 dark:text-zinc-400 transition-colors"
+                  className="px-3 py-1 rounded-lg text-3xs font-mono font-bold bg-gray-100 hover:bg-indigo-50 hover:text-indigo-600 dark:bg-zinc-900 dark:hover:bg-zinc-850 dark:hover:text-indigo-400 text-gray-700 dark:text-zinc-400 transition-colors"
                 >
                   #{tag}
                 </span>
@@ -216,7 +245,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
             {/* Related Drawer Shelf */}
             {relatedPosts.length > 0 && (
               <div className="pt-10 border-t border-gray-150 dark:border-zinc-900/60 space-y-4">
-                <h4 className="text-xs font-black uppercase text-gray-400 dark:text-zinc-550 tracking-wider">
+                <h4 className="text-xs font-black uppercase text-gray-700 dark:text-zinc-550 tracking-wider">
                   Associated Playbooks
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -229,6 +258,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                       <img
                         src={rel.imageUrl}
                         alt={rel.title}
+                        loading="lazy"
                         referrerPolicy="no-referrer"
                         className="w-16 h-16 rounded-lg object-cover shrink-0"
                       />
@@ -236,7 +266,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                         <h5 className="text-2xs font-extrabold text-gray-900 dark:text-white leading-tight group-hover:text-indigo-500 transition-colors line-clamp-2">
                           {rel.title}
                         </h5>
-                        <p className="text-3xs text-gray-400 mt-1">{rel.publishDate}</p>
+                        <p className="text-3xs text-gray-700 mt-1">{rel.publishDate}</p>
                       </div>
                     </div>
                   ))}
@@ -260,19 +290,39 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                 <h3 className="text-xs font-black tracking-tight text-gray-950 dark:text-white uppercase tracking-wider">
                   Grow Your Newsletter
                 </h3>
-                <p className="text-4xs text-gray-500 dark:text-zinc-400 mt-1 max-w-2xs mx-auto leading-relaxed">
+                <p className="text-4xs text-gray-700 dark:text-zinc-400 mt-1 max-w-2xs mx-auto leading-relaxed">
                   Join 14,000+ creators reading our weekly SEO frameworks and social design breakdown reviews.
                 </p>
               </div>
 
-              <input
-                type="email"
-                placeholder="Submit your email"
-                className="w-full text-4xs px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-zinc-850 dark:bg-zinc-900/35 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1.5 focus:ring-indigo-500 transition-all text-center"
-              />
-              <button className="w-full py-2.5 rounded-xl font-bold text-3xs text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
-                Subscribe Weekly
-              </button>
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                const form = e.target as HTMLFormElement;
+                const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+                if (!emailInput.value) return;
+                try {
+                  await fetch('/api/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput.value })
+                  });
+                  alert('Subscribed successfully!');
+                  emailInput.value = '';
+                } catch (err) {
+                  alert('Failed to subscribe.');
+                }
+              }}>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Submit your email"
+                  required
+                  className="w-full text-4xs px-3.5 py-2.5 rounded-xl border border-gray-400 dark:border-zinc-850 dark:bg-zinc-900/35 text-gray-900 dark:text-white placeholder-gray-600 dark:placeholder-zinc-500 focus:outline-none focus:ring-1.5 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-center mb-3"
+                />
+                <button type="submit" className="w-full py-2.5 rounded-xl font-bold text-3xs text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
+                  Subscribe Weekly
+                </button>
+              </form>
             </div>
           </aside>
 
@@ -291,20 +341,20 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
           <h1 className="text-3xl font-black tracking-tight text-gray-950 dark:text-white">
             Creator's Playbook Channel
           </h1>
-          <p className="text-xs text-gray-500 dark:text-zinc-400 mt-1">
+          <p className="text-xs text-gray-700 dark:text-zinc-400 mt-1">
             Browse highly strategic, actionable SEO analyses, social channel mechanics, and script frameworks.
           </p>
         </div>
 
         {/* Inline Search Bar */}
         <div className="relative w-full md:max-w-xs shrink-0">
-          <Search size={15} className="absolute left-3.5 top-3.5 text-gray-400 dark:text-zinc-550" />
+          <Search size={15} className="absolute left-3.5 top-3.5 text-gray-700 dark:text-zinc-550" />
           <input
             type="text"
             placeholder="Search keywords, tags..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full text-xs pl-10 pr-4 py-3 rounded-xl border border-gray-150 dark:border-zinc-850 dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1.5 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+            className="w-full text-xs pl-10 pr-4 py-3 rounded-xl border border-gray-400 dark:border-zinc-800 dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-600 dark:placeholder-zinc-500 focus:outline-none focus:ring-1.5 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
           />
         </div>
       </div>
@@ -318,7 +368,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
             className={`px-4 focus:outline-none py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
               selectedCategory === cat
                 ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/10 scale-[1.01]"
-                : "text-gray-600 hover:text-gray-900 bg-gray-50/70 hover:bg-gray-100/50 dark:text-zinc-400 dark:hover:text-zinc-200 dark:bg-zinc-900/60"
+                : "text-gray-700 hover:text-gray-900 bg-gray-50/70 hover:bg-gray-100/50 dark:text-zinc-400 dark:hover:text-zinc-200 dark:bg-zinc-900/60"
             }`}
           >
             {cat}
@@ -343,6 +393,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                     <img
                       src={post.imageUrl}
                       alt={post.title}
+                      loading="lazy"
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
                     />
@@ -353,7 +404,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
 
                   <div className="p-6 flex-1 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center gap-2 text-4xs text-gray-400 dark:text-zinc-550 mb-2 font-mono">
+                      <div className="flex items-center gap-2 text-4xs text-gray-700 dark:text-zinc-550 mb-2 font-mono">
                         <span>{post.publishDate}</span>
                         <span>•</span>
                         <span>{post.readTime}</span>
@@ -362,7 +413,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                       <h3 className="text-xs sm:text-sm font-black text-gray-950 dark:text-white leading-snug group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors mb-2">
                         {post.title}
                       </h3>
-                      <p className="text-3xs text-gray-500 dark:text-zinc-400 line-clamp-3 leading-relaxed mb-4">
+                      <p className="text-3xs text-gray-700 dark:text-zinc-400 line-clamp-3 leading-relaxed mb-4">
                         {post.excerpt}
                       </p>
                     </div>
@@ -372,6 +423,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                         <img
                           src={post.author.avatar}
                           alt={post.author.name}
+                          loading="lazy"
                           referrerPolicy="no-referrer"
                           className="w-6.5 h-6.5 rounded-full object-cover border border-gray-100 dark:border-zinc-850"
                         />
@@ -392,9 +444,9 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
             </div>
           ) : (
             <div className="text-center py-16 bg-gray-50/70 dark:bg-zinc-905/30 rounded-2xl border border-gray-100 dark:border-zinc-90">
-              <Search className="mx-auto text-gray-400 dark:text-zinc-650 mb-3" size={32} />
+              <Search className="mx-auto text-gray-700 dark:text-zinc-650 mb-3" size={32} />
               <h4 className="text-xs font-bold text-gray-700 dark:text-zinc-350">Search parameter empty</h4>
-              <p className="text-3xs text-gray-400 dark:text-zinc-500 max-w-sm mx-auto mt-1 leading-relaxed">
+              <p className="text-3xs text-gray-700 dark:text-zinc-500 max-w-sm mx-auto mt-1 leading-relaxed">
                 No matching articles could be retrieved for "{searchQuery}". Reset filters or explore other categories.
               </p>
               <button
@@ -424,7 +476,7 @@ export default function Blog({ onNavigateToBlogPost, selectedPostSlug, onBackToB
                 <button
                   key={ts}
                   onClick={() => setSearchQuery(ts)}
-                  className="px-2.5 py-1 text-4xs font-mono font-bold rounded-lg bg-gray-100 dark:bg-zinc-900 text-gray-500 dark:text-zinc-400 hover:bg-indigo-50 hover:text-indigo-600 transition-all"
+                  className="px-2.5 py-1 text-4xs font-mono font-bold rounded-lg bg-gray-100 dark:bg-zinc-900 text-gray-700 dark:text-zinc-400 hover:bg-indigo-50 hover:text-indigo-600 transition-all"
                 >
                   #{ts}
                 </button>

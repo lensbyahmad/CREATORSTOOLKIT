@@ -146,5 +146,157 @@ export const TOOL_GUIDES: Record<string, ToolGuide> = {
         answer: "Informational frameworks answer broad, authoritative questions, while Commercial objectives organize articles to support direct product trials, sign-ups, and downloads."
       }
     ]
+  },
+  "content-calendar": {
+    whatIsIt: "The AI Content Calendar Generator provides a full 30-day posting schedule. It tells you what to post, when to post, and what specific topic to cover, tailored for your niche.",
+    howToUse: [
+      "Enter your content niche or industry focus.",
+      "The generator creates a structured 30-day timeline with specific content ideas."
+    ],
+    examples: [
+      {
+        input: "Niche: 'YouTube Tech Reviews'",
+        output: "Day 1: [Video] Unboxing the newest mechanical keyboard. Hook: 'Is this the best typing experience yet?'\nDay 2: [Shorts] 3 hidden features in iOS 18."
+      }
+    ],
+    faqs: [
+      {
+        question: "Is this calendar tool free?",
+        answer: "Yes, this feature is completely free to use and provides a unique customized schedule for your niche."
+      }
+    ]
+  },
+  "viral-score": {
+    whatIsIt: "The Viral Score Checker evaluates the viral potential of your video title or post caption out of 100, providing actionable feedback.",
+    howToUse: [
+      "Paste your drafted title or caption.",
+      "Receive a score and detailed breakdown on why it will or won't go viral, along with improved suggestions."
+    ],
+    examples: [
+      {
+        input: "Caption: '10 Mistakes You're Making in Your 20s'",
+        output: "Score: 85/100. Strong curiosity gap, but needs a more specific emotional trigger. Alternative: 'The 10 Financial Mistakes Keeping You Broke in Your 20s'."
+      }
+    ],
+    faqs: [
+      {
+        question: "How is the viral score calculated?",
+        answer: "It uses predictive algorithms based on emotional valence, curiosity gap presence, and historical engagement data."
+      }
+    ]
+  },
+  "competitor-analysis": {
+    whatIsIt: "The Competitor Analysis Tool deconstructs a competitor's content strategy and generates ideas inspired by their success.",
+    howToUse: [
+      "Enter the handle or name of a successful competitor in your niche.",
+      "Review the breakdown of their working formats and suggested content ideas for your own channel."
+    ],
+    examples: [
+      {
+        input: "Competitor: '@mkbhd'",
+        output: "Analysis: High-quality visuals, deep-dive reviews, crisp editing. Idea 1: 'I Used the iPhone 15 Pro for 30 Days (The Honest Truth)'."
+      }
+    ],
+    faqs: [
+      {
+        question: "Will this copy my competitor?",
+        answer: "No, it analyzes their successful structures and suggests how to adapt those principles uniquely to your own voice."
+      }
+    ]
+  },
+  "thumbnail-text": {
+    whatIsIt: "The AI Thumbnail Text Generator creates punchy, emotional, and high-CTR text ideas specifically designed to fit on video thumbnails.",
+    howToUse: [
+      "Input your core video topic.",
+      "Select from 5 thumbnail text variations targeting different psychological emotions."
+    ],
+    examples: [
+      {
+        input: "Topic: 'How to edit faster in Premiere Pro'",
+        output: "1. Edit 5x Faster (Desire)\n2. Stop Editing Like This! (Shock)\n3. The Ultimate Shortcut (Curiosity)"
+      }
+    ],
+    faqs: [
+      {
+        question: "Why should thumbnail text be short?",
+        answer: "Viewers scroll quickly on mobile devices; text must be readable at small sizes in a fraction of a second."
+      }
+    ]
+  },
+  "repurpose": {
+    whatIsIt: "The Content Repurpose Tool converts a single piece of long-form content (like a script or blog post) into multiple optimized social formats.",
+    howToUse: [
+      "Paste your original script or article.",
+      "Copy the generated outputs for Instagram, Twitter, LinkedIn, Pinterest, and YouTube Shorts."
+    ],
+    examples: [
+      {
+        input: "Content: 'A 1000-word blog on the benefits of drinking water...'",
+        output: "[Twitter Thread] 1/ Water is life, but you're drinking it wrong... [LinkedIn] Professional thoughts on hydration for focus..."
+      }
+    ],
+    faqs: [
+      {
+        question: "Are the repurposed formats platform-specific?",
+        answer: "Yes, each output is tailored to the expected formatting and best practices of that specific platform."
+      }
+    ]
+  },
+  "niche-finder": {
+    whatIsIt: "The Niche Finder Tool suggests highly profitable content niches based on your unique combination of interests and skills.",
+    howToUse: [
+      "List your interests, hobbies, or professional skills.",
+      "Explore 5 suggested niches with breakdowns of earning potential and growth strategies."
+    ],
+    examples: [
+      {
+        input: "Interests: 'coding, mechanical keyboards'",
+        output: "Niche 1: 'Developer Desk Setups & Tech Reviews'. High earning potential via affiliate links and software sponsorships."
+      }
+    ],
+    faqs: [
+      {
+        question: "How do I choose the best niche?",
+        answer: "Look for the intersection of your true passion, low existing competition, and clear pathways for monetization."
+      }
+    ]
+  },
+  "brand-name": {
+    whatIsIt: "The AI Brand Name Generator creates unique, memorable names for your channel or blog, checks domain suitability, and crafts matching slogans.",
+    howToUse: [
+      "Enter your content niche and choose a brand style.",
+      "Select your favorite name from the generated list of 10 options."
+    ],
+    examples: [
+      {
+        input: "Niche: 'Travel Vlog', Style: 'Bold & Energetic'",
+        output: "Name: 'Nomad Velocity' | Domain: nomadvelocity.com | Slogan: 'Chase the Horizon at Full Speed.'"
+      }
+    ],
+    faqs: [
+      {
+        question: "Are the suggested domains guaranteed to be available?",
+        answer: "The tool suggests highly likely available combinations, but you should verify availability with a domain registrar."
+      }
+    ]
+  },
+  "hook-generator": {
+    whatIsIt: "The Hook Generator crafts powerful opening lines categorized by psychological triggers (Curiosity, Shock, Question, Story) to maximize viewer retention.",
+    howToUse: [
+      "Enter your video or post topic.",
+      "Review the categorized hooks and select the one that best fits your narrative."
+    ],
+    examples: [
+      {
+        input: "Topic: 'Why diets don't work'",
+        output: "[Shock]: 'Everything your trainer told you about calories is a lie.' [Curiosity]: 'I stopped dieting for 30 days, and here is what happened.'"
+      }
+    ],
+    faqs: [
+      {
+        question: "Which hook type works best?",
+        answer: "It depends on the platform and content. Shock works well for TikTok, while Curiosity often performs best on YouTube."
+      }
+    ]
   }
 };
